@@ -5,13 +5,65 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
     <script src="app.js" defer></script>
-    <title>Document</title>
+    <title>Fran Library</title>
   </head>
   <body>
-    <h1>Hello world</h1>
-    <h2>Welcome to my page</h2>
-    <p>
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic eaque, autem iure aperiam doloribus sapiente, aliquam id iusto, illo temporibus dolorem maiores sequi similique amet. Saepe libero at qui necessitatibus.
-    </p>
+    <nav>
+      <span class="logo">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <title>bookshelf</title>
+          <path d="M9 3V18H12V3H9M12 5L16 18L19 17L15 4L12 5M5 5V18H8V5H5M3 19V21H21V19H3Z" />
+        </svg>
+        Fran Books
+      </span>
+    </nav>
+    <div class="container">
+      <h2>My Library</h2>
+      <div class="books-container">
+        <div class="book">
+          <h3>Book Title</h3>
+          <p>by Book Author</p>
+          <div class="icons">
+            <img src="img/svg/check-circle-outline.svg" alt="Edit book" />
+            <img src="img/svg/square-edit-outline.svg" alt="Edit book" />
+            <img src="img/svg/trash-can-outline.svg" alt="Delete book" />
+          </div>
+        </div>
+        <div class="book">
+          <h3>Book Title</h3>
+          <p>by Book Author</p>
+          <div class="icons">
+            <img src="img/svg/check-circle-outline.svg" alt="Edit book" />
+            <img src="img/svg/square-edit-outline.svg" alt="Edit book" />
+            <img src="img/svg/trash-can-outline.svg" alt="Delete book" />
+          </div>
+        </div>
+        <div class="book">
+          <h3>Book Title</h3>
+          <p>by Book Author</p>
+          <div class="icons">
+            <img src="img/svg/check-circle-outline.svg" alt="Edit book" />
+            <img src="img/svg/square-edit-outline.svg" alt="Edit book" />
+            <img src="img/svg/trash-can-outline.svg" alt="Delete book" />
+          </div>
+        </div>
+        <div class="book">
+          <h3>Book Title</h3>
+          <p>by Book Author</p>
+          <div class="icons">
+            <img src="img/svg/check-circle-outline.svg" alt="Edit book" />
+            <img src="img/svg/square-edit-outline.svg" alt="Edit book" />
+            <img src="img/svg/trash-can-outline.svg" alt="Delete book" />
+          </div>
+        </div>
+        <div class="book newbook">
+          <p>Add new book</p>
+          <img src="img/svg/plus-circle-outline.svg" alt="Add new book" />
+        </div>
+      </div>
+    </div>
+    <footer>
+      <p>&copy; 2025 Fran Software, Inc</p>
+    </footer>
   </body>
 </html>

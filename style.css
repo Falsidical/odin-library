@@ -7,20 +7,96 @@
 body {
   background-color: #232323;
   color: #eee;
-}
-
-@media (prefers-color-scheme: light) {
-  body {
-    background: #fff;
-    color: #334;
-  }
-}
-
-ul {
-  list-style: none;
+  font-family: sans-serif;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 a {
   text-decoration: none;
   color: inherit;
+}
+
+nav {
+  background-color: #333;
+  padding: 8px;
+}
+
+nav svg {
+  width: 48px;
+  fill: white;
+}
+
+.logo {
+  color: white;
+  font-size: 1.6rem;
+  display: flex;
+  align-items: center;
+}
+
+.container {
+  padding: 16px;
+}
+
+.books-container {
+  margin-top: 16px;
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.book {
+  border: 4px solid gray;
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.newbook {
+  border-style: dashed;
+}
+
+.icons {
+  display: flex;
+  gap: 8px;
+  align-self: flex-end;
+}
+
+.icons img,
+.newbook img {
+  filter: brightness(0.5);
+  width: 38px;
+}
+
+.icons img:hover {
+  filter: brightness(1);
+  cursor: pointer;
+}
+
+.newbook {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  img {
+    width: 64px;
+  }
+  &:hover {
+    img {
+      filter: brightness(1);
+    }
+  }
+}
+
+footer {
+  margin-top: auto;
+  background-color: #101010;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  color: #c2c2c2;
 }
