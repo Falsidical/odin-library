@@ -34,6 +34,7 @@ nav {
   span {
     color: #fff;
     font-size: 1.6rem;
+    font-weight: 600;
     display: flex;
     align-items: center;
   }
@@ -61,6 +62,7 @@ nav {
 
 .newbook {
   border-style: dashed;
+  order: 1;
 }
 
 .icons {
@@ -115,7 +117,7 @@ dialog {
   background-color: transparent;
   border: 2px solid #ce2952;
   color: #eee;
-  backdrop-filter: blur(8px) saturate(200%);
+  backdrop-filter: blur(4px) saturate(200%);
 }
 
 form {
