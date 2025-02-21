@@ -57,7 +57,7 @@ nav {
   padding: 16px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 8px;
 }
 
 .newbook {
@@ -123,7 +123,7 @@ dialog {
 form {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
 
   button {
     background-color: #ce2952;
@@ -137,5 +137,14 @@ form {
     &:hover {
       background-color: #941e3b;
     }
+  }
+
+  input {
+    background-color: transparent;
+    font-size: 1rem;
+    color: inherit;
+    border: none;
+    outline: none;
+    border-bottom: 1px solid #eee;
   }
 }

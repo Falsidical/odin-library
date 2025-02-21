@@ -1,14 +1,22 @@
 const dialog = document.querySelector('dialog');
-const showBtn = document.querySelector('.show');
 const closeBtn = document.querySelector('.close');
 const form = document.querySelector('form');
 const booksContainer = document.querySelector('.books-container');
 
-const icons = ['circle-outline.svg', 'square-edit-outline.svg', 'trash-can-outline.svg'];
+const titleInput = document.querySelector('#title');
+const authorInput = document.querySelector('#author');
+const pagesInput = document.querySelector('#pages');
+const readInput = document.querySelector('#read');
 
-showBtn.addEventListener('click', () => {
-  dialog.showModal();
-});
+let formNewBook = true;
+let bookIndex = null;
+
+const iconsSrc = {
+  read: 'img/svg/check-circle-outline.svg',
+  notRead: 'img/svg/circle-outline.svg',
+  edit: 'img/svg/square-edit-outline.svg',
+  remove: 'img/svg/trash-can-outline.svg',
+};
 
 closeBtn.addEventListener('click', () => {
   dialog.close();
@@ -16,49 +24,92 @@ closeBtn.addEventListener('click', () => {
 
 form.addEventListener('submit', (e) => {
   e.preventDefault();
-  const formData = new FormData(form);
-
-  for (const [name, value] of formData.entries()) {
-    console.log(name, value);
+  const newBook = new Book(authorInput.value, titleInput.value, pagesInput.value, readInput.checked);
+  if (formNewBook) {
+    addBookToLibrary(newBook);
+  } else {
+    myLibrary[bookIndex] = newBook;
   }
+  formNewBook = true;
+  refreshBooksContainer();
   dialog.close();
 });
 
-function createBookDiv(book) {
+function createBookDiv(book, index) {
   const bookDiv = document.createElement('div');
+  bookDiv.dataset.index = index;
   bookDiv.classList.add('book');
-
   const title = document.createElement('h3');
   title.textContent = book.title;
-
   const author = document.createElement('p');
-  author.textContent = book.author;
-
+  author.textContent = `Written by ${book.author}`;
+  const pages = document.createElement('p');
+  pages.textContent = `${book.pages} Pages`;
   const iconsDiv = document.createElement('div');
   iconsDiv.classList.add('icons');
 
-  for (let i = 0; i < 3; i++) {
-    const icon = document.createElement('img');
-    icon.src = `img/svg/${icons[i]}`;
-    iconsDiv.appendChild(icon);
-  }
+  const readIcon = document.createElement('img');
+  book.read ? (readIcon.src = iconsSrc.read) : (readIcon.src = iconsSrc.notRead);
+  readIcon.addEventListener('click', () => {
+    myLibrary[index].read = !myLibrary[index].read;
+    refreshBooksContainer();
+  });
+  iconsDiv.appendChild(readIcon);
+
+  const editIcon = document.createElement('img');
+  editIcon.src = iconsSrc.edit;
+  iconsDiv.appendChild(editIcon);
+  editIcon.addEventListener('click', () => {
+    formNewBook = false;
+    bookIndex = index;
+    titleInput.value = book.title;
+    authorInput.value = book.author;
+    pagesInput.value = book.pages;
+    dialog.showModal();
+  });
+
+  const removeIcon = document.createElement('img');
+  removeIcon.src = iconsSrc.remove;
+  removeIcon.addEventListener('click', () => {
+    removeBookFromLibrary(index);
+  });
+  iconsDiv.appendChild(removeIcon);
 
   bookDiv.appendChild(title);
   bookDiv.appendChild(author);
+  bookDiv.appendChild(pages);
   bookDiv.appendChild(iconsDiv);
-
   booksContainer.appendChild(bookDiv);
 }
 
-const myLibrary = [
+function createNewBookDiv() {
+  const bookDiv = document.createElement('div');
+  bookDiv.classList.add('book');
+  bookDiv.classList.add('newbook');
+  bookDiv.classList.add('show');
+  const p = document.createElement('p');
+  p.textContent = 'Add new book';
+  const icon = document.createElement('img');
+  icon.src = `img/svg/plus-circle-outline.svg`;
+  bookDiv.appendChild(p);
+  bookDiv.appendChild(icon);
+  bookDiv.addEventListener('click', () => {
+    dialog.showModal();
+  });
+  booksContainer.appendChild(bookDiv);
+}
+
+let myLibrary = [
   {
     title: 'Harry Potter',
     author: 'J.K. Rowling',
+    pages: 200,
     read: true,
   },
   {
     title: 'Games of Thrones',
     author: 'George RR Martin',
+    pages: 500,
     read: false,
   },
 ];
@@ -70,10 +121,25 @@ function Book(author, title, pages, read) {
   this.read = read;
 }
 
+Book.prototype.toggleRead = function () {
+  this.read = !this.read;
+};
+
 function addBookToLibrary(book) {
   myLibrary.push(book);
 }
 
-myLibrary.forEach((book) => {
-  createBookDiv(book);
-});
+function refreshBooksContainer() {
+  booksContainer.replaceChildren();
+  myLibrary.forEach((book, index) => {
+    createBookDiv(book, index);
+  });
+  createNewBookDiv();
+}
+
+function removeBookFromLibrary(index) {
+  myLibrary = [...myLibrary.slice(0, index), ...myLibrary.slice(index + 1)];
+  refreshBooksContainer();
+}
+
+refreshBooksContainer();
