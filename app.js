@@ -8,6 +8,7 @@ const authorInput = document.querySelector('#author');
 const pagesInput = document.querySelector('#pages');
 const readInput = document.querySelector('#read');
 
+const myLibrary = [];
 let formNewBook = true;
 let bookIndex = null;
 
@@ -31,6 +32,7 @@ form.addEventListener('submit', (e) => {
     myLibrary[bookIndex] = newBook;
   }
   formNewBook = true;
+  clearInputs();
   refreshBooksContainer();
   dialog.close();
 });
@@ -51,7 +53,7 @@ function createBookDiv(book, index) {
   const readIcon = document.createElement('img');
   book.read ? (readIcon.src = iconsSrc.read) : (readIcon.src = iconsSrc.notRead);
   readIcon.addEventListener('click', () => {
-    myLibrary[index].read = !myLibrary[index].read;
+    myLibrary[index].toggleRead();
     refreshBooksContainer();
   });
   iconsDiv.appendChild(readIcon);
@@ -65,6 +67,7 @@ function createBookDiv(book, index) {
     titleInput.value = book.title;
     authorInput.value = book.author;
     pagesInput.value = book.pages;
+    readInput.checked = book.read;
     dialog.showModal();
   });
 
@@ -74,7 +77,6 @@ function createBookDiv(book, index) {
     removeBookFromLibrary(index);
   });
   iconsDiv.appendChild(removeIcon);
-
   bookDiv.appendChild(title);
   bookDiv.appendChild(author);
   bookDiv.appendChild(pages);
@@ -98,21 +100,6 @@ function createNewBookDiv() {
   });
   booksContainer.appendChild(bookDiv);
 }
-
-let myLibrary = [
-  {
-    title: 'Harry Potter',
-    author: 'J.K. Rowling',
-    pages: 200,
-    read: true,
-  },
-  {
-    title: 'Games of Thrones',
-    author: 'George RR Martin',
-    pages: 500,
-    read: false,
-  },
-];
 
 function Book(author, title, pages, read) {
   this.author = author;
@@ -138,8 +125,21 @@ function refreshBooksContainer() {
 }
 
 function removeBookFromLibrary(index) {
-  myLibrary = [...myLibrary.slice(0, index), ...myLibrary.slice(index + 1)];
+  myLibrary.splice(index, 1);
   refreshBooksContainer();
 }
+
+function clearInputs() {
+  authorInput.value = '';
+  titleInput.value = '';
+  pagesInput.value = '';
+  readInput.checked = false;
+}
+
+const book1 = new Book('JK Rowling', 'Harry Potter', '400', true);
+addBookToLibrary(book1);
+
+const book2 = new Book('George Orwell', 'Animal Farm', '300', true);
+addBookToLibrary(book2);
 
 refreshBooksContainer();
