@@ -1,3 +1,5 @@
+import { myLibrary } from './library.js';
+
 const dialog = document.querySelector('dialog');
 const closeBtn = document.querySelector('.close');
 const form = document.querySelector('form');
@@ -8,10 +10,6 @@ const authorInput = document.querySelector('#author');
 const pagesInput = document.querySelector('#pages');
 const readInput = document.querySelector('#read');
 
-const myLibrary = [];
-let formNewBook = true;
-let bookIndex = null;
-
 const iconsSrc = {
   read: 'img/svg/check-circle-outline.svg',
   notRead: 'img/svg/circle-outline.svg',
@@ -19,17 +17,19 @@ const iconsSrc = {
   remove: 'img/svg/trash-can-outline.svg',
 };
 
+let formNewBook = true;
+let bookIndex = null;
+
 closeBtn.addEventListener('click', () => {
   dialog.close();
 });
 
 form.addEventListener('submit', (e) => {
   e.preventDefault();
-  const newBook = new Book(authorInput.value, titleInput.value, pagesInput.value, readInput.checked);
   if (formNewBook) {
-    addBookToLibrary(newBook);
+    myLibrary.createBook(titleInput.value, authorInput.value, pagesInput.value, readInput.checked);
   } else {
-    myLibrary[bookIndex] = newBook;
+    myLibrary.createBook(titleInput.value, authorInput.value, pagesInput.value, readInput.checked, bookIndex);
   }
   formNewBook = true;
   clearInputs();
@@ -53,7 +53,7 @@ function createBookDiv(book, index) {
   const readIcon = document.createElement('img');
   book.read ? (readIcon.src = iconsSrc.read) : (readIcon.src = iconsSrc.notRead);
   readIcon.addEventListener('click', () => {
-    myLibrary[index].toggleRead();
+    myLibrary.bookshelf[index].toggleRead();
     refreshBooksContainer();
   });
   iconsDiv.appendChild(readIcon);
@@ -74,7 +74,8 @@ function createBookDiv(book, index) {
   const removeIcon = document.createElement('img');
   removeIcon.src = iconsSrc.remove;
   removeIcon.addEventListener('click', () => {
-    removeBookFromLibrary(index);
+    myLibrary.removeBook(index);
+    refreshBooksContainer();
   });
   iconsDiv.appendChild(removeIcon);
   bookDiv.appendChild(title);
@@ -101,34 +102,6 @@ function createNewBookDiv() {
   booksContainer.appendChild(bookDiv);
 }
 
-function Book(author, title, pages, read) {
-  this.author = author;
-  this.title = title;
-  this.pages = pages;
-  this.read = read;
-}
-
-Book.prototype.toggleRead = function () {
-  this.read = !this.read;
-};
-
-function addBookToLibrary(book) {
-  myLibrary.push(book);
-}
-
-function refreshBooksContainer() {
-  booksContainer.replaceChildren();
-  myLibrary.forEach((book, index) => {
-    createBookDiv(book, index);
-  });
-  createNewBookDiv();
-}
-
-function removeBookFromLibrary(index) {
-  myLibrary.splice(index, 1);
-  refreshBooksContainer();
-}
-
 function clearInputs() {
   authorInput.value = '';
   titleInput.value = '';
@@ -136,10 +109,12 @@ function clearInputs() {
   readInput.checked = false;
 }
 
-const book1 = new Book('JK Rowling', 'Harry Potter', '400', true);
-addBookToLibrary(book1);
-
-const book2 = new Book('George Orwell', 'Animal Farm', '300', true);
-addBookToLibrary(book2);
+function refreshBooksContainer() {
+  booksContainer.replaceChildren();
+  myLibrary.bookshelf.forEach((book, index) => {
+    createBookDiv(book, index);
+  });
+  createNewBookDiv();
+}
 
 refreshBooksContainer();
